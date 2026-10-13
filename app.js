@@ -10,13 +10,16 @@ const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
 const REGIONS = {
   networking: window.KJ_NETWORKING,
   pentesting: window.KJ_PENTESTING,
+  programming: window.KJ_PROGRAMMING,
 };
+let REGION_ID = "networking";               // active region id
 let REGION = REGIONS.networking;            // active region
 let CLUSTERS = REGION.clusters;
 let CONCEPTS = REGION.concepts;
 let RELATIONS = REGION.relations;
 function setRegion(id){
-  REGION = REGIONS[id] || REGIONS.networking;
+  REGION_ID = REGIONS[id] ? id : "networking";
+  REGION = REGIONS[REGION_ID];
   CLUSTERS = REGION.clusters; CONCEPTS = REGION.concepts; RELATIONS = REGION.relations;
 }
 const byId = id => CONCEPTS.find(c=>c.id===id);
@@ -249,7 +252,7 @@ function buildMap(){
   const ht=el("text",{class:"hub-lbl",x:cx,y:cy+6},hub);
   ht.textContent=REGION.hub;
   // keep hub label from overflowing the core on longer region names
-  if(REGION.hub.length>11) ht.setAttribute("font-size","14");
+  if(REGION.hub.length>10) ht.setAttribute("font-size","14");
 
   applyView();
 }
@@ -325,7 +328,7 @@ function highlight(text){
     // inline trailing comment after 2+ spaces
     line=line.replace(/( {2,}[#!].*)$/,'<span class="cmt">$1</span>');
     line=line.replace(/\b(\d+(?:\.\d+)*(?:\/\d+)?)\b/g,'<span class="num">$1</span>');
-    line=line.replace(/\b(SYN|ACK|FIN|RST|GET|POST|PUT|DELETE|SELECT|UNION|TCP|UDP|IP|TLS|ESP|IKE|permit|deny|interface|switchport|mode|access|trunk|vlan|show|ping|traceroute|sudo|tcpdump|nmap|curl|gobuster|ffuf|nikto|searchsploit|hydra|smbclient|ldapsearch|dig|openssl|msfconsole|set|exploit|whoami|hostname|find)\b/g,'<span class="key">$1</span>');
+    line=line.replace(/\b(SYN|ACK|FIN|RST|GET|POST|PUT|DELETE|SELECT|UNION|WHERE|FROM|INSERT|UPDATE|TCP|UDP|IP|TLS|ESP|IKE|permit|deny|interface|switchport|mode|trunk|vlan|show|ping|traceroute|sudo|tcpdump|nmap|curl|gobuster|ffuf|nikto|searchsploit|hydra|smbclient|ldapsearch|dig|openssl|msfconsole|exploit|whoami|hostname|import|def|func|fn|let|const|return|print|package|public|void)\b/g,'<span class="key">$1</span>');
     return line;
   }).join("\n");
   return t;
@@ -459,12 +462,12 @@ function defaultZoom(){
 const REGION_SUBTITLE = {
   networking: "the chain of decisions behind every packet",
   pentesting: "observe, hypothesise, verify, prove impact — then report",
+  programming: "the languages and frameworks security work is built on",
 };
 function enterMap(){
   view.x=0;view.y=0;view.s=defaultZoom();
   const mt=q(".map-title");
-  if(mt){ const key = REGION===REGIONS.pentesting?"pentesting":"networking";
-    mt.innerHTML = `${REGION.hub}<small>${REGION_SUBTITLE[key]||""}</small>`; }
+  if(mt){ mt.innerHTML = `${REGION.hub}<small>${REGION_SUBTITLE[REGION_ID]||""}</small>`; }
   buildMap();
 }
 

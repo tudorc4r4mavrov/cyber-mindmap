@@ -9,7 +9,7 @@
 const CATEGORIES = [
   { id: "networking",   name: "Networking",               tagline: "How packets travel, and where security lives", status: "ready", hue: "cyan"  },
   { id: "pentesting",   name: "Pentesting Methodologies", tagline: "Structured approaches to authorized offense",  status: "ready",  hue: "green" },
-  { id: "programming",  name: "Programming Languages",    tagline: "Languages & frameworks for security work",     status: "soon",  hue: "amber" },
+  { id: "programming",  name: "Programming Languages",    tagline: "Languages & frameworks for security work",     status: "ready",  hue: "amber" },
 ];
 
 /* 8 clusters, ordered clockwise from the top; accents chosen so neighbours contrast. */
